@@ -13,6 +13,10 @@ provider "aws" {
   secret_key = var.aws_secret_key
 }
 
+provider "random" {
+  
+}
+
 resource "aws_vpc" "name" {
   cidr_block = var.cidr_block
 }

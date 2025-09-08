@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Pago realizado</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    h1 {
+      color: #2b2d42;
+      font-size: 22px;
+      text-align: center;
+    }
+    p {
+      color: #333333;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    .data {
+      background: #f1f1f1;
+      padding: 10px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 14px;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Pago realizado exitosamente</h1>
+    <p>Hemos procesado el siguiente pago:</p>
+    <div class="data">
+      <p><strong>Fecha:</strong> {{date}}</p>
+      <p><strong>Método de pago:</strong> {{merchant}}</p>
+      <p><strong>Monto pagado:</strong> {{amount}}</p>
+    </div>
+    <p>Si este pago fue realizado por ti, no necesitas hacer nada.  
+    Si no lo reconoces, por favor contacta a soporte de inmediato.</p>
+  </div>
+</body>
+</html>

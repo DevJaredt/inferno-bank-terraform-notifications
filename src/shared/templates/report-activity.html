@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reporte de Actividad</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f7;
+      padding: 20px;
+      color: #333;
+    }
+    .container {
+      background-color: white;
+      max-width: 600px;
+      margin: 0 auto;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #0073e6;
+    }
+    .date {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .btn {
+      display: inline-block;
+      background-color: #0073e6;
+      color: white;
+      padding: 12px 20px;
+      text-decoration: none;
+      border-radius: 6px;
+      text-align: center;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    .btn:hover {
+      background-color: #005bb5;
+    }
+    .footer {
+      font-size: 12px;
+      text-align: center;
+      color: #777;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Reporte de Actividad</h1>
+    <p class="date">Generado en: {{date}}</p>
+    <p>Haz clic en el siguiente botón para ver tu reporte de transacciones:</p>
+    <p style="text-align: center;">
+      <a href="{{url}}" class="btn" target="_blank">Ver Reporte</a>
+    </p>
+    <p class="footer">Si no solicitaste este reporte, por favor ignora este correo.</p>
+  </div>
+</body>
+</html>

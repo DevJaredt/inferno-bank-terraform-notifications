@@ -16,13 +16,6 @@ variable "aws_region" {
   sensitive   = true
  }
 
- variable "cidr_block" {
-  description = "The CIDR block for the VPC"
-  type        = string
-  default     = "10.0.0.0/16"
-   
- }
-
  variable "notification_queue_name" {
   description = "Name of the main notification SQS queue"
   type        = string

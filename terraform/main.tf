@@ -65,6 +65,24 @@ resource "aws_s3_bucket" "templates_email_notification" {
   }
 }
 
+resource "aws_s3_object" "welcome_template" {
+  bucket = aws_s3_bucket.templates_email_notification.bucket
+  key = "welcome.html"
+  source = "${path.module}/../src/shared/templates/welcome.html"
+}
+
+resource "aws_s3_object" "user_login_template" {
+  bucket = aws_s3_bucket.templates_email_notification.bucket
+  key = "user-login.html"
+  source = "${path.module}/../src/shared/templates/user-login.html"
+}
+
+resource "aws_s3_object" "user_update" {
+  bucket = aws_s3_bucket.templates_email_notification.bucket
+  key = "user-update.html"
+  source = "${path.module}/../src/shared/templates/user-update.html"
+}
+
 resource "random_string" "bucket_suffix" {
   length  = 8
   special = false
@@ -163,8 +181,11 @@ resource "aws_lambda_function" "send_notifications_lambda_updated" {
 
   environment {
     variables = {
+      REGION = var.aws_region
       NOTIFICATION_TABLE = aws_dynamodb_table.notification_table.name
       TEMPLATES_BUCKET = aws_s3_bucket.templates_email_notification.bucket
+      SMTP_USER = var.smtp_user
+      SMTP_PASS = var.smtp_pass
     }
   }
 

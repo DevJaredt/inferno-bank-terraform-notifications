@@ -14,6 +14,7 @@
     "@types/aws-lambda": "^8.10.152",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.3.1",
+    "@types/nodemailer": "^7.0.1",
     "adm-zip": "^0.5.16",
     "esbuild": "^0.25.9",
     "ts-node": "^10.9.2",
@@ -23,6 +24,7 @@
     "@aws-sdk/client-api-gateway": "^3.883.0",
     "@aws-sdk/client-dynamodb": "^3.883.0",
     "@aws-sdk/client-lambda": "^3.883.0",
+    "@aws-sdk/client-s3": "^3.884.0",
     "@aws-sdk/client-secrets-manager": "^3.883.0",
     "@aws-sdk/lib-dynamodb": "^3.883.0",
     "@middy/core": "^6.4.4",
@@ -31,6 +33,7 @@
     "@middy/validator": "^6.4.4",
     "bcryptjs": "^3.0.2",
     "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^7.0.6",
     "uuid": "^12.0.0"
   }
 }

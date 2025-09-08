@@ -8,12 +8,3 @@ export type NotificationType =
   | 'TRANSACTION.SAVE'
   | 'TRANSACTION.PAID'
   | 'REPORT.ACTIVITY';
-
-export interface INotification {
-  uuid: string;
-  event: {
-    type: NotificationType;
-    data: Record<string, string | number>;
-  };
-  createdAt: string;
-}

@@ -1,24 +1,27 @@
-import { SQSEvent, SQSHandler, Context } from "aws-lambda";
-
-export const handler: SQSHandler = async (
-  event: SQSEvent,
-  context: Context
-) => {
-  console.log("Lambda invocation ID:", context.awsRequestId);
-  console.log("Event received:", JSON.stringify(event, null, 2));
-
-  try {
-    for (const record of event.Records) {
-      const timestamp = new Date().toISOString();
-      console.log(`[${timestamp}] Processing message ID: ${record.messageId}`);
-      console.log("Message body:", record.body);
-
-      // Tu lógica aquí
-
-      console.log(`[${timestamp}] Message processed successfully`);
+// DEBUG Lambda - Para probar si está funcionando
+export const handler = async (event: any, context: any) => {
+    console.log('🚀 Lambda ejecutándose!');
+    console.log('📨 Event recibido:', JSON.stringify(event, null, 2));
+    console.log('📋 Context:', JSON.stringify(context, null, 2));
+    
+    try {
+        // Procesar cada record del SQS
+        for (const record of event.Records) {
+            console.log('📦 Procesando record:', JSON.stringify(record, null, 2));
+            
+            const messageBody = JSON.parse(record.body);
+            console.log('💌 Mensaje parseado:', JSON.stringify(messageBody, null, 2));
+            
+            console.log(`✅ Mensaje procesado exitosamente: ${messageBody.type}`);
+        }
+        
+        return {
+            statusCode: 200,
+            body: JSON.stringify('Messages processed successfully')
+        };
+        
+    } catch (error) {
+        console.error('❌ Error procesando mensaje:', error);
+        throw error; // Esto hará que el mensaje vaya al DLQ después de 3 intentos
     }
-  } catch (error) {
-    console.error("Error processing message:", error);
-    throw error; // Esto asegura que el mensaje vaya a la DLQ
-  }
 };

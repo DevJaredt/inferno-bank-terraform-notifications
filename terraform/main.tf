@@ -240,7 +240,7 @@ resource "aws_lambda_event_source_mapping" "notification_sqs_lambda_trigger" {
   event_source_arn = aws_sqs_queue.notification_email_sqs.arn
   function_name    = aws_lambda_function.send_notifications_lambda_updated.arn
   batch_size       = 1
-  enabled          = true
+  enabled          = false
   maximum_batching_window_in_seconds = 0
   scaling_config {
     maximum_concurrency = 5

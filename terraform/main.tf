@@ -26,17 +26,20 @@ resource "aws_sqs_queue" "notification_email_sqs" {
   delay_seconds = 0
   max_message_size          = 262144
   message_retention_seconds = 1209600 
-  receive_wait_time_seconds = 0
+  visibility_timeout_seconds = 90
+  receive_wait_time_seconds = 20
 
-  redrive_policy = jsonencode({
+   redrive_policy = jsonencode({
     deadLetterTargetArn = aws_sqs_queue.notification_email_error_sqs.arn
     maxReceiveCount     = 3
   })
+
 
   tags = {
     name = "notification-email-sqs"
     environment = "production"
   }
+  depends_on = [aws_sqs_queue.notification_email_error_sqs]
 }
 
 resource "aws_sqs_queue" "notification_email_error_sqs" {
@@ -44,7 +47,7 @@ resource "aws_sqs_queue" "notification_email_error_sqs" {
   delay_seconds = 0
   max_message_size          = 262144
   message_retention_seconds = 1209600 
-  receive_wait_time_seconds = 0
+  receive_wait_time_seconds = 20
   visibility_timeout_seconds = 300
 
   tags = {
@@ -236,8 +239,22 @@ resource "aws_iam_role_policy_attachment" "lambda_notifications_policy" {
 resource "aws_lambda_event_source_mapping" "notification_sqs_lambda_trigger" {
   event_source_arn = aws_sqs_queue.notification_email_sqs.arn
   function_name    = aws_lambda_function.send_notifications_lambda_updated.arn
-  batch_size       = 10
+  batch_size       = 1
   enabled          = true
+  maximum_batching_window_in_seconds = 0
+  scaling_config {
+    maximum_concurrency = 5
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_cloudwatch_logs" {
+  role       = aws_iam_role.iam_for_lambda_notifications.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_cloudwatch_full_access" {
+  role       = aws_iam_role.iam_for_lambda_notifications.name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"  # Solo para debugging
 }
 
 resource "aws_lambda_event_source_mapping" "notification_error_sqs_lambda_trigger" {

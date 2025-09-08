@@ -1,9 +1,9 @@
-import { INotification } from '../types/notification-messages';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { INotification } from '../../shared/interfaces/notification.interface';
 import { PutCommand } from '@aws-sdk/lib-dynamodb';
 
-const dynamoDbclient = new DynamoDBClient({ region: 'us-west-1' });
-const tableName = 'notification-table';
+const dynamoDbclient = new DynamoDBClient({ region: process.env.REGION! });
+const tableName = process.env.NOTIFICATION_TABLE;
 
 export const DynamoDbProvider = {
   save: async (notification: INotification): Promise<void> => {

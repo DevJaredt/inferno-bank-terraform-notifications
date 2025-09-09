@@ -1,10 +1,10 @@
-import { SQSEvent } from 'aws-lambda';
-import { DynamoDbProvider } from '../../providers/dynamodb/dynamodb.provider';
-import { v4 as uuidv4 } from 'uuid';
-import { MailerProvider } from '../../providers/mailer/mailer.provider';
-import { IEvent } from '../../shared/interfaces/event.interface';
-import { s3Provider } from '../../providers/s3/s3.provider';
-import { TEMPLATE_KEY } from '../../shared/constants/template-key.constant';
+import { SQSEvent } from "aws-lambda";
+import { DynamoDbProvider } from "../../providers/dynamodb/dynamodb.provider";
+import { v4 as uuidv4 } from "uuid";
+import { MailerProvider } from "../../providers/mailer/mailer.provider";
+import { IEvent } from "../../shared/interfaces/event.interface";
+import { s3Provider } from "../../providers/s3/s3.provider";
+import { TEMPLATE_KEY } from "../../shared/constants/template-key.constant";
 
 export const handler = async (event: SQSEvent): Promise<void> => {
   try {
@@ -23,26 +23,71 @@ export const handler = async (event: SQSEvent): Promise<void> => {
       };
 
       switch (body.type) {
-        case 'WELCOME':
+        case "WELCOME":
           await MailerProvider.sendMail({
             ...mailInfo,
-            subject: 'Welcome!',
+            subject: "Welcome!",
             html: await s3Provider.get(TEMPLATE_KEY.WELCOME),
           });
           break;
-        case 'USER.LOGIN':
+        case "USER.LOGIN":
           await MailerProvider.sendMail({
             ...mailInfo,
-            subject: 'Login report',
+            subject: "Login report",
             html: await s3Provider.get(TEMPLATE_KEY.LOGIN),
           });
           break;
 
-        case 'USER.UPDATE':
+        case "USER.UPDATE":
           await MailerProvider.sendMail({
             ...mailInfo,
-            subject: 'Data updated!',
+            subject: "Data updated!",
             html: await s3Provider.get(TEMPLATE_KEY.UPDATE),
+          });
+          break;
+
+        case "CARD.CREATE":
+          await MailerProvider.sendMail({
+            ...mailInfo,
+            subject: "Card created!",
+            html: await s3Provider.get(TEMPLATE_KEY.CARD_CREATE),
+          });
+          break;
+
+        case "CARD.ACTIVATE":
+          await MailerProvider.sendMail({
+            ...mailInfo,
+            subject: "Card activated!",
+            html: await s3Provider.get(TEMPLATE_KEY.CARD_ACTIVATE),
+          });
+          break;
+
+        case "TRANSACTION.PURCHASE":
+          await MailerProvider.sendMail({
+            ...mailInfo,
+            subject: "Purchase made!",
+            html: await s3Provider.get(TEMPLATE_KEY.TRANSACTION_PURCHASE),
+          });
+          break;
+        case "TRANSACTION.SAVE":
+          await MailerProvider.sendMail({
+            ...mailInfo,
+            subject: "Money saved!",
+            html: await s3Provider.get(TEMPLATE_KEY.TRANSACTION_SAVE),
+          });
+          break;
+        case "TRANSACTION.PAID":
+          await MailerProvider.sendMail({
+            ...mailInfo,
+            subject: "Payment made!",
+            html: await s3Provider.get(TEMPLATE_KEY.TRANSACTION_PAID),
+          });
+          break;
+        case "REPORT.ACTIVITY":
+          await MailerProvider.sendMail({
+            ...mailInfo,
+            subject: "Your activity report",
+            html: await s3Provider.get(TEMPLATE_KEY.REPORT_ACTIVITY),
           });
           break;
 
@@ -51,7 +96,7 @@ export const handler = async (event: SQSEvent): Promise<void> => {
       }
     }
   } catch (error) {
-    console.error('Error at send notification:', error);
+    console.error("Error at send notification:", error);
     throw error;
   }
 };

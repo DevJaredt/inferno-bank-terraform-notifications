@@ -67,21 +67,58 @@ resource "aws_s3_bucket" "templates_email_notification" {
 
 resource "aws_s3_object" "welcome_template" {
   bucket = aws_s3_bucket.templates_email_notification.bucket
-  key = "welcome.html"
-  source = "${path.module}/../src/shared/templates/welcome.html"
+  key = "welcome.hbs"
+  source = "${path.module}/../src/shared/templates/welcome.hbs"
 }
 
 resource "aws_s3_object" "user_login_template" {
   bucket = aws_s3_bucket.templates_email_notification.bucket
-  key = "user-login.html"
-  source = "${path.module}/../src/shared/templates/user-login.html"
+  key = "user-login.hbs"
+  source = "${path.module}/../src/shared/templates/user-login.hbs"
 }
 
-resource "aws_s3_object" "user_update" {
+resource "aws_s3_object" "user_update_template" {
   bucket = aws_s3_bucket.templates_email_notification.bucket
-  key = "user-update.html"
-  source = "${path.module}/../src/shared/templates/user-update.html"
+  key = "user-update.hbs"
+  source = "${path.module}/../src/shared/templates/user-update.hbs"
 }
+
+resource "aws_s3_object" "card_create_template" {
+  bucket = aws_s3_bucket.templates_email_notification.bucket
+  key = "card-create.hbs"
+  source = "${path.module}/../src/shared/templates/card-create.hbs"
+}
+
+resource "aws_s3_object" "card_activate_template" {
+  bucket = aws_s3_bucket.templates_email_notification.bucket
+  key = "card-activate.hbs"
+  source = "${path.module}/../src/shared/templates/card-activate.hbs"
+}
+
+resource "aws_s3_object" "transaction_purchase_template" {
+  bucket = aws_s3_bucket.templates_email_notification.bucket
+  key = "transaction-purchase.hbs"
+  source = "${path.module}/../src/shared/templates/transaction-purchase.hbs"
+}
+
+resource "aws_s3_object" "transaction_save_template" {
+  bucket = aws_s3_bucket.templates_email_notification.bucket
+  key = "transaction-save.hbs"
+  source = "${path.module}/../src/shared/templates/transaction-save.hbs"
+}
+
+resource "aws_s3_object" "transaction_paid_template" {
+  bucket = aws_s3_bucket.templates_email_notification.bucket
+  key = "transaction-paid.hbs"
+  source = "${path.module}/../src/shared/templates/transaction-paid.hbs"
+}
+
+resource "aws_s3_object" "report_activity_template" {
+  bucket = aws_s3_bucket.templates_email_notification.bucket
+  key = "report-activity.hbs"
+  source = "${path.module}/../src/shared/templates/report-activity.hbs"
+}
+
 
 resource "random_string" "bucket_suffix" {
   length  = 8

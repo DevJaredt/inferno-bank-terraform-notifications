@@ -5,6 +5,9 @@ import { MailerProvider } from "../../providers/mailer/mailer.provider";
 import { IEvent } from "../../shared/interfaces/event.interface";
 import { s3Provider } from "../../providers/s3/s3.provider";
 import { TEMPLATE_KEY } from "../../shared/constants/template-key.constant";
+import { compileTemplate } from "../../shared/templates/compile-template"
+import handlebars from "handlebars";
+
 
 export const handler = async (event: SQSEvent): Promise<void> => {
   try {
@@ -22,19 +25,24 @@ export const handler = async (event: SQSEvent): Promise<void> => {
         to: body.data.email!,
       };
 
+      const getHtml = async (templateKey: string) => {
+        const templateSource = await s3Provider.get(templateKey);
+        return compileTemplate(templateSource, body.data);
+      };
+
       switch (body.type) {
         case "WELCOME":
           await MailerProvider.sendMail({
             ...mailInfo,
             subject: "Welcome!",
-            html: await s3Provider.get(TEMPLATE_KEY.WELCOME),
+            html: await getHtml(TEMPLATE_KEY.WELCOME),
           });
           break;
         case "USER.LOGIN":
           await MailerProvider.sendMail({
             ...mailInfo,
             subject: "Login report",
-            html: await s3Provider.get(TEMPLATE_KEY.LOGIN),
+            html: await getHtml(TEMPLATE_KEY.LOGIN),
           });
           break;
 
@@ -42,7 +50,7 @@ export const handler = async (event: SQSEvent): Promise<void> => {
           await MailerProvider.sendMail({
             ...mailInfo,
             subject: "Data updated!",
-            html: await s3Provider.get(TEMPLATE_KEY.UPDATE),
+            html: await getHtml(TEMPLATE_KEY.UPDATE),
           });
           break;
 
@@ -50,7 +58,7 @@ export const handler = async (event: SQSEvent): Promise<void> => {
           await MailerProvider.sendMail({
             ...mailInfo,
             subject: "Card created!",
-            html: await s3Provider.get(TEMPLATE_KEY.CARD_CREATE),
+            html: await getHtml(TEMPLATE_KEY.CARD_CREATE),
           });
           break;
 
@@ -58,7 +66,7 @@ export const handler = async (event: SQSEvent): Promise<void> => {
           await MailerProvider.sendMail({
             ...mailInfo,
             subject: "Card activated!",
-            html: await s3Provider.get(TEMPLATE_KEY.CARD_ACTIVATE),
+            html: await getHtml(TEMPLATE_KEY.CARD_ACTIVATE),
           });
           break;
 
@@ -66,28 +74,28 @@ export const handler = async (event: SQSEvent): Promise<void> => {
           await MailerProvider.sendMail({
             ...mailInfo,
             subject: "Purchase made!",
-            html: await s3Provider.get(TEMPLATE_KEY.TRANSACTION_PURCHASE),
+            html: await getHtml(TEMPLATE_KEY.TRANSACTION_PURCHASE),
           });
           break;
         case "TRANSACTION.SAVE":
           await MailerProvider.sendMail({
             ...mailInfo,
             subject: "Money saved!",
-            html: await s3Provider.get(TEMPLATE_KEY.TRANSACTION_SAVE),
+            html: await getHtml(TEMPLATE_KEY.TRANSACTION_SAVE),
           });
           break;
         case "TRANSACTION.PAID":
           await MailerProvider.sendMail({
             ...mailInfo,
             subject: "Payment made!",
-            html: await s3Provider.get(TEMPLATE_KEY.TRANSACTION_PAID),
+            html: await getHtml(TEMPLATE_KEY.TRANSACTION_PAID),
           });
           break;
         case "REPORT.ACTIVITY":
           await MailerProvider.sendMail({
             ...mailInfo,
             subject: "Your activity report",
-            html: await s3Provider.get(TEMPLATE_KEY.REPORT_ACTIVITY),
+            html: await getHtml(TEMPLATE_KEY.REPORT_ACTIVITY),
           });
           break;
 
